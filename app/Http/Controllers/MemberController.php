@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Member;
 use Illuminate\Http\Request;
 
 class MemberController extends Controller
@@ -11,7 +12,8 @@ class MemberController extends Controller
      */
     public function index()
     {
-        //
+        $members = Member::all();
+        return view('members.index', compact('members'));
     }
 
     /**
@@ -19,7 +21,7 @@ class MemberController extends Controller
      */
     public function create()
     {
-        //
+        return view('members.create');
     }
 
     /**
@@ -27,38 +29,57 @@ class MemberController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'pass_no' => 'required|string',
+            'address' => 'required',
+            'contact_info' => 'required|numeric',
+        ]);
+
+        Member::create($request->all());
+        return redirect()->route('members.index')->with('success', 'Member created successfully.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Member $member)
     {
-        //
+        return view('members.show', compact('member'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Member $member)
     {
-        //
+        return view('members.edit', compact('member'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Member $member)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'pass_no' => 'required|string',
+            'address' => 'required',
+            'contact_info' => 'required|numeric',
+        ]);
+
+        $member->update($request->all());
+        return redirect()->route('members.index')->with('success', 'Member updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Member $member)
     {
-        //
+        $member->delete();
+        return redirect()->route('members.index')->with('success', 'Member deleted successfully.');
     }
 }

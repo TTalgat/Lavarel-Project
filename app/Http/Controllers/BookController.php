@@ -23,7 +23,7 @@ class BookController extends Controller
         $request->validate([
             'title' => 'required',
             'author' => 'required',
-            'publisher_name' => 'required',
+            'publisher' => 'required',
             'published_year' => 'required|digits:4',
             'category' => 'required',
         ]);
@@ -47,7 +47,7 @@ class BookController extends Controller
         $request->validate([
             'title' => 'required',
             'author' => 'required',
-            'publisher_name' => 'required',
+            'publisher' => 'required',
             'published_year' => 'required|digits:4',
             'category' => 'required',
         ]);

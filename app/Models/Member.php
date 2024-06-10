@@ -11,9 +11,9 @@ class Member extends Model
 
     protected $fillable = [
         'name',
-        'ic_no',
+        'pass_no',
         'address',
-        'contact_information',
+        'contact_info',
     ];
 
     // Relationships
