@@ -1,24 +1,35 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\BorrowingRecordController;
+use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\MemberController;
-use App\Http\Controllers\BorrowingController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->middleware('checkUserRegistered');
 Auth::routes();
 
-Route::resource('books', BookController::class);
-Route::resource('members', MemberController::class);
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
 
+    Route::resource('books', BookController::class);
+    Route::resource('members', MemberController::class);
 
-Route::resource('borrowings', BorrowingController::class);
-Route::post('borrowings/return', [BorrowingController::class, 'returnBook'])->name('borrowings.return');
-Auth::routes();
+    Route::middleware(['role:supervisor'])->group(function () {
+        Route::resource('volunteers', VolunteerController::class);
+    });
+
+    Route::middleware(['role:volunteer,supervisor'])->group(function () {
+        Route::resource('borrowing-records', BorrowingRecordController::class);
+    });
+
+    // Ensure this route is inside the auth middleware
+    Route::get('books/{book}/borrowers', [BookController::class, 'borrowers'])->name('books.borrowers');
+});
+
+Route::middleware(['auth', 'role:volunteer,supervisor'])->group(function () {
+    Route::resource('borrowing-records', BorrowingRecordController::class);
+});

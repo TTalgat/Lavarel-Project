@@ -17,8 +17,8 @@ class Member extends Model
     ];
 
     // Relationships
-    public function borrowings()
+    public function borrows()
     {
-        return $this->hasMany(Borrowing::class);
+        return $this->hasMany(BorrowingRecord::class);
     }
 }

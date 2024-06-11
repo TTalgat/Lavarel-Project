@@ -11,11 +11,11 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('borrowing_records', function (Blueprint $table) {
-            $table->id();  // Ensure this is an unsigned big integer
-            $table->foreignId('book_id')->constrained('books')->onDelete('cascade');
-            $table->foreignId('member_id')->constrained('members')->onDelete('cascade');
-            $table->date('borrowing_date');
-            $table->date('returning_date')->nullable();
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('book_id')->constrained()->onDelete('cascade');
+            $table->timestamp('borrowed_at');
+            $table->timestamp('returned_at')->nullable();
             $table->timestamps();
         });
 

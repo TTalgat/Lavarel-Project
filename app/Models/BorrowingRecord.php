@@ -5,25 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Borrowing extends Model
+class BorrowingRecord extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'book_id',
-        'member_id',
-        'borrow_date',
-        'return_date',
-    ];
+    protected $fillable = ['user_id', 'book_id', 'member_id', 'borrowed_at', 'returned_at'];
 
-    // Relationships
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function book()
     {
-        return $this->belongsTo(Book::class);
+        return $this->belongsTo(User::class);
     }
 
     public function member()
     {
-        return $this->belongsTo(Member::class);
+        return $this->belongsTo(Book::class);
     }
 }

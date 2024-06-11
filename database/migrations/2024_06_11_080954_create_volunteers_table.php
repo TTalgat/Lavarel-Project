@@ -8,26 +8,26 @@ return new class extends Migration {
     /**
      * Run the migrations.
      */
+    // database/migrations/xxxx_xx_xx_create_volunteers_table.php
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('volunteers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('role', ['supervisor', 'volunteer']);
+            $table->string('role');
+            $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
     }
+
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('sessions');
+        Schema::dropIfExists('volunteers');
     }
 };

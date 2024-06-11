@@ -28,6 +28,7 @@
                     <td>
                         <a href="{{ route('books.show', $book) }}" class="btn btn-info">View</a>
                         <a href="{{ route('books.edit', $book) }}" class="btn btn-warning">Edit</a>
+                        <a href="{{ route('books.borrowers', $book) }}" class="btn btn-primary">Borrowers</a>
                         <form action="{{ route('books.destroy', $book) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')

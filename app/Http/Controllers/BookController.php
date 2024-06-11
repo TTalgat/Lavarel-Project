@@ -61,4 +61,10 @@ class BookController extends Controller
         $book->delete();
         return redirect()->route('books.index')->with('success', 'Book deleted successfully.');
     }
+
+    public function borrowers(Book $book)
+    {
+        $borrowers = $book->borrowings()->with('user')->get();
+        return view('books.borrowers', compact('book', 'borrowers'));
+    }
 }
