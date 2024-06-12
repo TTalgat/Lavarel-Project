@@ -9,7 +9,7 @@ class BorrowingRecord extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'book_id', 'member_id', 'borrowed_at', 'returned_at'];
+    protected $fillable = ['user_id', 'book_id', 'borrowed_at', 'returned_at'];
 
     public function user()
     {
@@ -17,11 +17,6 @@ class BorrowingRecord extends Model
     }
 
     public function book()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    public function member()
     {
         return $this->belongsTo(Book::class);
     }

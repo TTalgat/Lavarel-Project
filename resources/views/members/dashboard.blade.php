@@ -25,10 +25,8 @@
                     <td>{{ $book->published_year }}</td>
                     <td>{{ $book->category->name }}</td>
                     <td>
-                        <form action="{{ route('borrow.store') }}" method="POST">
+                        <form action="{{ route('books.borrow', $book) }}" method="POST">
                             @csrf
-                            <input type="hidden" name="book_id" value="{{ $book->id }}">
-                            <input type="hidden" name="borrowed_at" value="{{ now() }}">
                             <button type="submit" class="btn btn-primary">Borrow</button>
                         </form>
                     </td>
@@ -59,9 +57,8 @@
                     <td>{{ $record->returned_at ?? 'Not Returned' }}</td>
                     <td>
                         @if(!$record->returned_at)
-                            <form action="{{ route('borrow.return', $record->id) }}" method="POST">
+                            <form action="{{ route('books.return', $record->book) }}" method="POST">
                                 @csrf
-                                @method('PATCH')
                                 <button type="submit" class="btn btn-danger">Return</button>
                             </form>
                         @endif

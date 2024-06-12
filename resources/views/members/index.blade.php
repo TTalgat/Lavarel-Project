@@ -9,9 +9,7 @@
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Passport No</th>
-                <th>Address</th>
-                <th>Contact Information</th>
+                <th>Email</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -20,13 +18,11 @@
                 <tr>
                     <td>{{ $member->id }}</td>
                     <td>{{ $member->name }}</td>
-                    <td>{{ $member->pass_no }}</td>
-                    <td>{{ $member->address }}</td>
-                    <td>{{ $member->contact_info }}</td>
+                    <td>{{ $member->email }}</td>
                     <td>
-                        <a href="{{ route('members.show', $member) }}" class="btn btn-info">View</a>
-                        <a href="{{ route('members.edit', $member) }}" class="btn btn-warning">Edit</a>
-                        <form action="{{ route('members.destroy', $member) }}" method="POST" style="display:inline;">
+                        <a href="{{ route('members.show', $member->id) }}" class="btn btn-info">View</a>
+                        <a href="{{ route('members.edit', $member->id) }}" class="btn btn-warning">Edit</a>
+                        <form action="{{ route('members.destroy', $member->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">Delete</button>

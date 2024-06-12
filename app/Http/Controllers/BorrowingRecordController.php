@@ -4,22 +4,22 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\BorrowingRecord;
-use App\Models\User;
 use App\Models\Book;
+use App\Models\User;
 use Auth;
 
 class BorrowingRecordController extends Controller
 {
+    // Display form to create a new borrowing record
     public function index()
     {
-        $records = BorrowingRecord::with(['user', 'book'])->get();
-        return view('borrowing-records.index', compact('records'));
+        $borrowingRecords = BorrowingRecord::with('book', 'user')->get();
+        return view('borrowing-records.index', compact('borrowingRecords'));
     }
 
-    public function create(Request $request)
+    public function create(Book $book)
     {
-        $book_id = $request->query('book_id');
-        return view('borrowing-records.create', compact('book_id'));
+        return view('borrowing-records.create', compact('book'));
     }
 
     public function store(Request $request)
@@ -38,6 +38,15 @@ class BorrowingRecordController extends Controller
         return redirect()->route('home')->with('success', 'Book borrowed successfully.');
     }
 
+    public function returnBook(BorrowingRecord $borrowingRecord)
+    {
+        $borrowingRecord->update(['returned_at' => now()]);
+
+        return redirect()->route('home')->with('success', 'Book returned successfully.');
+    }
+    // Other CRUD methods if necessary
+
+
     public function show(BorrowingRecord $borrowingRecord)
     {
         return view('borrowing-records.show', compact('borrowingRecord'));
@@ -45,9 +54,9 @@ class BorrowingRecordController extends Controller
 
     public function edit(BorrowingRecord $borrowingRecord)
     {
-        $users = User::all();
         $books = Book::all();
-        return view('borrowing-records.edit', compact('borrowingRecord', 'users', 'books'));
+        $users = User::all();
+        return view('borrowing-records.edit', compact('borrowingRecord', 'books', 'users'));
     }
 
     public function update(Request $request, BorrowingRecord $borrowingRecord)
@@ -56,9 +65,11 @@ class BorrowingRecordController extends Controller
             'user_id' => 'required|exists:users,id',
             'book_id' => 'required|exists:books,id',
             'borrowed_at' => 'required|date',
+            'returned_at' => 'nullable|date',
         ]);
 
         $borrowingRecord->update($request->all());
+
         return redirect()->route('borrowing-records.index')->with('success', 'Borrowing record updated successfully.');
     }
 

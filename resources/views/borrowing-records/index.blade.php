@@ -2,35 +2,38 @@
 
 @section('content')
 <div class="container">
-    <h2>Borrowing Records</h2>
-    <a href="{{ route('borrowing-records.create') }}" class="btn btn-success mb-3">Add New Record</a>
+    <h2>Books</h2>
+    <a href="{{ route('books.create') }}" class="btn btn-success mb-3">Add New Book</a>
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>User</th>
-                <th>Book</th>
-                <th>Borrowed At</th>
-                <th>Returned At</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Publisher</th>
+                <th>Year</th>
+                <th>Category</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($records as $record)
+            @foreach($books as $book)
                 <tr>
-                    <td>{{ $record->id }}</td>
-                    <td>{{ $record->user->name }}</td>
-                    <td>{{ $record->book->title }}</td>
-                    <td>{{ $record->borrowed_at }}</td>
-                    <td>{{ $record->returned_at }}</td>
+                    <td>{{ $book->id }}</td>
+                    <td>{{ $book->title }}</td>
+                    <td>{{ $book->author }}</td>
+                    <td>{{ $book->publisher }}</td>
+                    <td>{{ $book->published_year }}</td>
+                    <td>{{ $book->category->name }}</td>
                     <td>
-                        <a href="{{ route('borrowing-records.show', $record) }}" class="btn btn-info">View</a>
-                        <a href="{{ route('borrowing-records.edit', $record) }}" class="btn btn-warning">Edit</a>
-                        <form action="{{ route('borrowing-records.destroy', $record) }}" method="POST" style="display:inline;">
+                        <a href="{{ route('books.show', $book) }}" class="btn btn-info">View</a>
+                        <a href="{{ route('books.edit', $book) }}" class="btn btn-warning">Edit</a>
+                        <form action="{{ route('books.destroy', $book) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
+                        <a href="{{ route('books.borrowers', $book) }}" class="btn btn-secondary">Borrowers</a>
                     </td>
                 </tr>
             @endforeach

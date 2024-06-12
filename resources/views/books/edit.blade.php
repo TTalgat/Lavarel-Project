@@ -3,39 +3,34 @@
 @section('content')
 <div class="container">
     <h2>Edit Book</h2>
-
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
     <form action="{{ route('books.update', $book->id) }}" method="POST">
         @csrf
         @method('PUT')
-        <div class="mb-3">
-            <label for="title" class="form-label">Title</label>
-            <input type="text" class="form-control" id="title" name="title" value="{{ $book->title }}" required>
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" name="title" class="form-control" id="title" value="{{ $book->title }}" required>
         </div>
-        <div class="mb-3">
-            <label for="author" class="form-label">Author</label>
-            <input type="text" class="form-control" id="author" name="author" value="{{ $book->author }}" required>
+        <div class="form-group">
+            <label for="author">Author</label>
+            <input type="text" name="author" class="form-control" id="author" value="{{ $book->author }}" required>
         </div>
-        <div class="mb-3">
-            <label for="publisher" class="form-label">Publisher</label>
-            <input type="text" class="form-control" id="publisher" name="publisher" value="{{ $book->publisher }}" required>
+        <div class="form-group">
+            <label for="publisher">Publisher</label>
+            <input type="text" name="publisher" class="form-control" id="publisher" value="{{ $book->publisher }}" required>
         </div>
-        <div class="mb-3">
-            <label for="published_year" class="form-label">Year</label>
-            <input type="number" class="form-control" id="published_year" name="published_year" value="{{ $book->published_year }}" required>
+        <div class="form-group">
+            <label for="published_year">Published Year</label>
+            <input type="number" name="published_year" class="form-control" id="published_year" value="{{ $book->published_year }}" required>
         </div>
-        <div class="mb-3">
-            <label for="category" class="form-label">Category</label>
-            <input type="text" class="form-control" id="category" name="category" value="{{ $book->category }}" required>
+        <div class="form-group">
+            <label for="category_id">Category</label>
+            <select class="form-control" id="category_id" name="category_id" required>
+                @foreach($categories as $category)
+                    <option value="{{ $category->id }}" {{ $category->id == $book->category_id ? 'selected' : '' }}>
+                        {{ $category->name }}
+                    </option>
+                @endforeach
+            </select>
         </div>
         <button type="submit" class="btn btn-primary">Update</button>
     </form>

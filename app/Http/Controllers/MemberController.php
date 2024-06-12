@@ -2,84 +2,73 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Member;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class MemberController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $members = Member::all();
+        $members = User::where('role', 'volunteer')->get();
         return view('members.index', compact('members'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('members.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-            'pass_no' => 'required|string',
-            'address' => 'required',
-            'contact_info' => 'required|numeric',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
-        Member::create($request->all());
-        return redirect()->route('members.index')->with('success', 'Member created successfully.');
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => 'volunteer',
+        ]);
+
+        return redirect()->route('members.index')->with('success', 'Member added successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Member $member)
+    public function show(User $member)
     {
         return view('members.show', compact('member'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Member $member)
+    public function edit(User $member)
     {
         return view('members.edit', compact('member'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Member $member)
+    public function update(Request $request, User $member)
     {
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-            'pass_no' => 'required|string',
-            'address' => 'required',
-            'contact_info' => 'required|numeric',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+            'password' => 'nullable|string|min:8|confirmed',
         ]);
 
-        $member->update($request->all());
+        $data = $request->only(['name', 'email']);
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        $member->update($data);
+
         return redirect()->route('members.index')->with('success', 'Member updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Member $member)
+    public function destroy(User $member)
     {
         $member->delete();
+
         return redirect()->route('members.index')->with('success', 'Member deleted successfully.');
     }
 }

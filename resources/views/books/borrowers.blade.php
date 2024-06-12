@@ -12,11 +12,11 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($borrowers as $borrow)
+            @foreach($borrowers as $borrower)
                 <tr>
-                    <td>{{ $borrow->user->name }}</td>
-                    <td>{{ $borrow->borrowed_at }}</td>
-                    <td>{{ $borrow->returned_at }}</td>
+                    <td>{{ $borrower->user->name }}</td>
+                    <td>{{ $borrower->borrowed_at }}</td>
+                    <td>{{ $borrower->returned_at ?? 'Not Returned' }}</td>
                 </tr>
             @endforeach
         </tbody>
