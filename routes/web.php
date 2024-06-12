@@ -29,15 +29,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/books/{book}/borrowers', [BookController::class, 'borrowers'])->name('books.borrowers');
 
     // Routes for Members
-    Route::prefix('members')->middleware('role:supervisor')->group(function () {
-        Route::get('/create', [MemberController::class, 'create'])->name('members.create');
-        Route::post('/', [MemberController::class, 'store'])->name('members.store');
-        Route::get('/', [MemberController::class, 'index'])->name('members.index');
-        Route::get('/{member}', [MemberController::class, 'show'])->name('members.show');
-        Route::get('/{member}/edit', [MemberController::class, 'edit'])->name('members.edit');
-        Route::put('/{member}', [MemberController::class, 'update'])->name('members.update');
-        Route::delete('/{member}', [MemberController::class, 'destroy'])->name('members.destroy');
-    });
+    Route::resource('members', MemberController::class)->middleware('auth');
+    Route::get('/members/create', [MemberController::class, 'create'])->name('members.create');
+    Route::post('/members', [MemberController::class, 'store'])->name('members.store');
+    Route::get('/members', [MemberController::class, 'index'])->name('members.index');
+    Route::get('/members/{member}', [MemberController::class, 'show'])->name('members.show');
+    Route::get('/members/{member}/edit', [MemberController::class, 'edit'])->name('members.edit');
+    Route::put('/members/{member}', [MemberController::class, 'update'])->name('members.update');
+    Route::delete('/members/{member}', [MemberController::class, 'destroy'])->name('members.destroy');
 
     // Logout Route
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');

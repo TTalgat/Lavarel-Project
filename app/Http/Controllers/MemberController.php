@@ -25,13 +25,19 @@ class MemberController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
+            'pass_no' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'contact_info' => 'required|string|max:255',
         ]);
 
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'volunteer',
+            'role' => 'volunteer', // Set role to volunteer
+            'pass_no' => $request->ic_no,
+            'address' => $request->address,
+            'contact_info' => $request->contact_info,
         ]);
 
         return redirect()->route('members.index')->with('success', 'Member added successfully.');
@@ -52,15 +58,12 @@ class MemberController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
-            'password' => 'nullable|string|min:8|confirmed',
+            'pass_no' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'contact_info' => 'required|string|max:255',
         ]);
 
-        $data = $request->only(['name', 'email']);
-        if ($request->filled('password')) {
-            $data['password'] = Hash::make($request->password);
-        }
-
-        $member->update($data);
+        $member->update($request->all());
 
         return redirect()->route('members.index')->with('success', 'Member updated successfully.');
     }
