@@ -5,7 +5,7 @@
     <h2>Books</h2>
     <a href="{{ route('books.create') }}" class="btn btn-success mb-3">Add New Book</a>
     @if(auth()->user()->role === 'supervisor')
-        <a href="{{ route('members.create') }}" class="btn btn-primary mb-3">Add New Member</a>
+        <a href="{{ route('members.index') }}" class="btn btn-primary mb-3">Add New Member</a>
     @endif
     <table class="table table-striped">
         <thead>
